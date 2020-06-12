@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import './layouts/styles/style.css'
-import './layouts/styles/normalize.css'
+import './layout/style/style.css'
 
 Vue.config.productionTip = false
 
