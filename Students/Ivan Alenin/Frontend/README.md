@@ -4,8 +4,3 @@
 ```
 npm install
 ```
-
-### Run
-```
-npm run app
-```
