@@ -1,0 +1,18 @@
+{
+  "name": "Lesson-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "app": "npm run app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ansi": "^0.3.1",
+    "assert": "^2.0.0",
+    "chalk": "^4.1.0",
+    "inquirer": "^7.1.0"
+  }
+}
