@@ -22,11 +22,8 @@ module.exports = class Game {
 
     if (turn >= 3) return this.exit()
     
-    console.log()
-    console.log(TEXT.YOU_CHOSEN, GREEN, TEXT[turn], RESET)
-    console.log()
-    console.log(TEXT.GAME, UNDERSCORE, TEXT.COMP_THINKING, RESET)
-    console.log()
+    this.printText('\n',TEXT.YOU_CHOSEN, GREEN, TEXT[turn])
+    this.printText(TEXT.GAME, UNDERSCORE, TEXT.COMP_THINKING)
 
     setTimeout(() => {
       let compTurn = this.computerTurn()
@@ -53,25 +50,26 @@ module.exports = class Game {
     this.stats.push({result, playerTurn, npcTurn})
   }
 
+  printText (...args) {
+    console.log(...args, RESET, '\n')
+  }
+
   printStats () {
     console.clear()
-    console.log(BRIGHT, TEXT.STATS, RESET)
-    console.log()
+    this.printText(BRIGHT, TEXT.STATS)
     this.stats.forEach((stat, index) => {
-      console.log(TEXT.STAT_PHRASE
+      this.printText(TEXT.STAT_PHRASE
         .replace('%NUM', index + 1)
         .replace('%RESULT', stat.result === -1 ? TEXT.TIE : stat.result ? TEXT.WIN : TEXT.LOSE )
         .replace('%PLAYER', TEXT[stat.playerTurn])
         .replace('%COMP', TEXT[stat.npcTurn])
       )
     })
-    console.log()
   }
 
   computerTurn () {
     let figure = ~~(Math.random() * 3)
-    console.log(TEXT.COMP_CHOSEN, YELLOW, TEXT[figure], RESET)
-    console.log()
+    this.printText(TEXT.COMP_CHOSEN, YELLOW, TEXT[figure])
     return figure
   }
 
@@ -93,8 +91,6 @@ module.exports = class Game {
   }
 
   exit () {
-    console.log()
-    console.log(YELLOW, BRIGHT, TEXT.GAME, TEXT.EXIT, RESET)
-    console.log()
+    this.printText('\n', YELLOW, BRIGHT, TEXT.GAME, TEXT.EXIT)
   }
 }
