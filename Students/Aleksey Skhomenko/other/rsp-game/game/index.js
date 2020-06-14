@@ -1,34 +1,9 @@
 ﻿// const readline = require('readline')
 const rls = require('readline-sync')
+const { ROCK, SCISSORS, PAPER, TEXT } = require('./game_constants.js')
+const { RESET, BRIGHT, UNDERSCORE, RED, GREEN, YELLOW } = require('./ansi_styles.js')
 
-// ANSI STYLE CONSTANTS
-const RESET = "\x1b[0m", BRIGHT = "\x1b[1m", UNDERSCORE = "\x1b[4m"
-const BLACK = "\x1b[30m", WHITE = "\x1b[37m", RED = "\x1b[31m", GREEN = "\x1b[32m", YELLOW = "\x1b[33m"
-const BGBLACK = "\x1b[40m", BGWHITE = "\x1b[47m", BGRED = "\x1b[41m", BGGREEN = "\x1b[42m", BGYELLOW = "\x1b[43m"
-
-// GAME CONSTANTS
-const ROCK = 0, SCISSORS = 1, PAPER = 2
-const TEXT = {
-  [ROCK]: 'КАМЕНЬ',
-  [SCISSORS]: 'НОЖНИЦЫ',
-  [PAPER]: 'БУМАГА',
-  ALL: ['КАМЕНЬ', 'НОЖНИЦЫ', 'БУМАГА'],
-  EXIT: 'ВЫХОД ИЗ ИГРЫ',
-  GAME: 'ИГРА:',
-  WIN: 'ПОБЕДА',
-  LOSE: 'ПОРАЖЕНИЕ',
-  GAMENAME: 'КАМЕНЬ НОЖНИЦЫ БУМАГА',
-  YOUR_CHOICE: 'Ваш выбор?',
-  YOU_CHOSEN: 'Вы выбрали:',
-  COMP_THINKING: 'РАЗ ДВА ТРИ!',
-  COMP_CHOSEN: 'Компьютер выбрал:',
-  PLAY_AGAIN: 'СЫГРАТЬ ЕЩЕ РАЗ',
-  STATS: 'СТАТИСТИКА',
-  SHOW_STATS: 'ПОСМОТРЕТЬ СТАТИСТИКУ',
-  STAT_PHRASE: 'ИГРА %NUM: %RESULT (игрок - %PLAYER, компьютер - %COMP)'
-}
-
-class Game {
+module.exports = class Game {
   constructor () {
     this.stats = []
     this._init(true)
@@ -63,6 +38,10 @@ class Game {
   }
   
   checkResult (playerTurn, npcTurn) {
+    if (playerTurn === npcTurn) {
+      console.log(TEXT.GAME, BRIGHT,  TEXT.TIE, RESET)
+      return -1
+    }
     let win = (playerTurn === ROCK && npcTurn === SCISSORS)
       || (playerTurn === SCISSORS && npcTurn === PAPER)
       || (playerTurn === PAPER && npcTurn === ROCK)
@@ -81,7 +60,7 @@ class Game {
     this.stats.forEach((stat, index) => {
       console.log(TEXT.STAT_PHRASE
         .replace('%NUM', index + 1)
-        .replace('%RESULT', stat.result ? TEXT.WIN : TEXT.LOSE )
+        .replace('%RESULT', stat.result === -1 ? TEXT.TIE : stat.result ? TEXT.WIN : TEXT.LOSE )
         .replace('%PLAYER', TEXT[stat.playerTurn])
         .replace('%COMP', TEXT[stat.npcTurn])
       )
@@ -119,5 +98,3 @@ class Game {
     console.log()
   }
 }
-
-module.exports = new Game()
