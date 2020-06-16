@@ -1,7 +1,5 @@
 const readline = require('readline');
 
-
-let http = require("http")
 let colorizer = require("./colorText")
 
 let textError = {
