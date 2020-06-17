@@ -24,6 +24,11 @@ module.exports = {
         colorText: 'yellow',
         colorBg:'black'
     },
+    textGreen: {
+        text: "",
+        colorText: 'green',
+        colorBg:'black'
+    },
     textStandart: {
         text: "",
     }
