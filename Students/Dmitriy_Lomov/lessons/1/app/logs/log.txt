@@ -2,39 +2,52 @@
     
 
         *** ROUND ***
-        User: 1; 
+        User: Rock; 
 
-        Pc: 3; 
+        Pc: Paper; 
 
         Winner: SkyNet; 
 
-        time: June 14 2020, 10:52:53; 
+        time: June 18 2020, 01:04:38; 
 
         *** END ***
     
     
 
         *** ROUND ***
-        User: 2; 
+        User: Rock; 
 
-        Pc: 3; 
+        Pc: Rock; 
+
+        Winner: Nobody; 
+
+        time: June 18 2020, 01:04:41; 
+
+        *** END ***
+    
+    
+
+        *** ROUND ***
+        User: Rock; 
+
+        Pc: Rock; 
+
+        Winner: Nobody; 
+
+        time: June 18 2020, 01:04:44; 
+
+        *** END ***
+    
+    
+
+        *** ROUND ***
+        User: Rock; 
+
+        Pc: Scissors; 
 
         Winner: Neo; 
 
-        time: June 14 2020, 10:52:58; 
-
-        *** END ***
-    
-    
-
-        *** ROUND ***
-        User: 2; 
-
-        Pc: 1; 
-
-        Winner: SkyNet; 
-
-        time: June 15 2020, 08:58:34; 
+        time: June 18 2020, 01:04:46; 
 
         *** END ***
     
