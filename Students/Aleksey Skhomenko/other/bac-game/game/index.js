@@ -18,15 +18,7 @@ module.exports = class Game {
     this.isEnglish = true
     this.stats = []
     
-    this._init(true)
-  }
-
-  _init (first) {
-    console.clear();
-    if (first) {
-      this._splashScreen();
-    }
-    this.menu();
+    this._splashScreen()
   }
 
   _splashScreen () {
@@ -40,6 +32,7 @@ module.exports = class Game {
     );
 
     rls.keyInPause(TEXT.PRESSSPACE, {guide: false});
+    this.menu();
   }
 
   menu () {
@@ -51,6 +44,7 @@ module.exports = class Game {
       TEXT.MENU_LANG.replace('%CURRENT', YELLOW + (this.isEnglish ? 'ENG' : 'RUS') + RESET),
       TEXT.MENU_SHOWSTATS,
       TEXT.MENU_CLEARSTATS,
+      TEXT.MENU_SHOWRULES,
       TEXT.EXIT
     ], TEXT.YOUR_CHOICE, { cancel: false });
     
@@ -59,7 +53,8 @@ module.exports = class Game {
     else if (select === 2) this.set_language();
     else if (select === 3) this.printStats();
     else if (select === 4) this.clearStats();
-    else if (select > 4) this.exit();
+    else if (select === 5) this._splashScreen();
+    else if (select > 5) this.exit();
   }
 
   play () {
@@ -162,7 +157,7 @@ module.exports = class Game {
           .replace('%WINS', GREEN + wins + RESET)
           .replace('%WINRATE', GREEN + winrate + '%' + RESET)
           .replace('%LOSES', RED + loses + RESET)
-        + '\n' + games + '\n'
+        + '\n' + games
       );
     } else {
       console.log(TEXT.NO_STATS);
