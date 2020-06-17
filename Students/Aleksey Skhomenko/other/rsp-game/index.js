@@ -1,1 +1,3 @@
-let game = require('./game')
+let Game = require('./game')
+
+new Game()

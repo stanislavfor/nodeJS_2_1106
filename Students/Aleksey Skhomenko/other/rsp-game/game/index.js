@@ -1,34 +1,9 @@
 ﻿// const readline = require('readline')
 const rls = require('readline-sync')
+const { ROCK, SCISSORS, PAPER, TEXT } = require('./game_constants.js')
+const { RESET, BRIGHT, UNDERSCORE, RED, GREEN, YELLOW } = require('./ansi_styles.js')
 
-// ANSI STYLE CONSTANTS
-const RESET = "\x1b[0m", BRIGHT = "\x1b[1m", UNDERSCORE = "\x1b[4m"
-const BLACK = "\x1b[30m", WHITE = "\x1b[37m", RED = "\x1b[31m", GREEN = "\x1b[32m", YELLOW = "\x1b[33m"
-const BGBLACK = "\x1b[40m", BGWHITE = "\x1b[47m", BGRED = "\x1b[41m", BGGREEN = "\x1b[42m", BGYELLOW = "\x1b[43m"
-
-// GAME CONSTANTS
-const ROCK = 0, SCISSORS = 1, PAPER = 2
-const TEXT = {
-  [ROCK]: 'КАМЕНЬ',
-  [SCISSORS]: 'НОЖНИЦЫ',
-  [PAPER]: 'БУМАГА',
-  ALL: ['КАМЕНЬ', 'НОЖНИЦЫ', 'БУМАГА'],
-  EXIT: 'ВЫХОД ИЗ ИГРЫ',
-  GAME: 'ИГРА:',
-  WIN: 'ПОБЕДА',
-  LOSE: 'ПОРАЖЕНИЕ',
-  GAMENAME: 'КАМЕНЬ НОЖНИЦЫ БУМАГА',
-  YOUR_CHOICE: 'Ваш выбор?',
-  YOU_CHOSEN: 'Вы выбрали:',
-  COMP_THINKING: 'РАЗ ДВА ТРИ!',
-  COMP_CHOSEN: 'Компьютер выбрал:',
-  PLAY_AGAIN: 'СЫГРАТЬ ЕЩЕ РАЗ',
-  STATS: 'СТАТИСТИКА',
-  SHOW_STATS: 'ПОСМОТРЕТЬ СТАТИСТИКУ',
-  STAT_PHRASE: 'ИГРА %NUM: %RESULT (игрок - %PLAYER, компьютер - %COMP)'
-}
-
-class Game {
+module.exports = class Game {
   constructor () {
     this.stats = []
     this._init(true)
@@ -47,11 +22,8 @@ class Game {
 
     if (turn >= 3) return this.exit()
     
-    console.log()
-    console.log(TEXT.YOU_CHOSEN, GREEN, TEXT[turn], RESET)
-    console.log()
-    console.log(TEXT.GAME, UNDERSCORE, TEXT.COMP_THINKING, RESET)
-    console.log()
+    this.printText('\n',TEXT.YOU_CHOSEN, GREEN, TEXT[turn])
+    this.printText(TEXT.GAME, UNDERSCORE, TEXT.COMP_THINKING)
 
     setTimeout(() => {
       let compTurn = this.computerTurn()
@@ -63,6 +35,10 @@ class Game {
   }
   
   checkResult (playerTurn, npcTurn) {
+    if (playerTurn === npcTurn) {
+      console.log(TEXT.GAME, BRIGHT,  TEXT.TIE, RESET)
+      return -1
+    }
     let win = (playerTurn === ROCK && npcTurn === SCISSORS)
       || (playerTurn === SCISSORS && npcTurn === PAPER)
       || (playerTurn === PAPER && npcTurn === ROCK)
@@ -74,25 +50,26 @@ class Game {
     this.stats.push({result, playerTurn, npcTurn})
   }
 
+  printText (...args) {
+    console.log(...args, RESET, '\n')
+  }
+
   printStats () {
     console.clear()
-    console.log(BRIGHT, TEXT.STATS, RESET)
-    console.log()
+    this.printText(BRIGHT, TEXT.STATS)
     this.stats.forEach((stat, index) => {
-      console.log(TEXT.STAT_PHRASE
+      this.printText(TEXT.STAT_PHRASE
         .replace('%NUM', index + 1)
-        .replace('%RESULT', stat.result ? TEXT.WIN : TEXT.LOSE )
+        .replace('%RESULT', stat.result === -1 ? TEXT.TIE : stat.result ? TEXT.WIN : TEXT.LOSE )
         .replace('%PLAYER', TEXT[stat.playerTurn])
         .replace('%COMP', TEXT[stat.npcTurn])
       )
     })
-    console.log()
   }
 
   computerTurn () {
     let figure = ~~(Math.random() * 3)
-    console.log(TEXT.COMP_CHOSEN, YELLOW, TEXT[figure], RESET)
-    console.log()
+    this.printText(TEXT.COMP_CHOSEN, YELLOW, TEXT[figure])
     return figure
   }
 
@@ -114,10 +91,6 @@ class Game {
   }
 
   exit () {
-    console.log()
-    console.log(YELLOW, BRIGHT, TEXT.GAME, TEXT.EXIT, RESET)
-    console.log()
+    this.printText('\n', YELLOW, BRIGHT, TEXT.GAME, TEXT.EXIT)
   }
 }
-
-module.exports = new Game()
