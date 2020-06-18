@@ -6,6 +6,7 @@ const { RESET, BRIGHT, RED, GREEN, YELLOW } = require('./ansi_styles.js')
 const { read_logs, write_logs } = require('./logger.js')
 const { ENG, RUS } = require('./game_strings.js')
 
+
 let TEXT = ENG
 
 module.exports = class Game {
@@ -17,6 +18,15 @@ module.exports = class Game {
     this.debug = true
     this.isEnglish = true
     this.stats = []
+    this.cmds = {
+        '0': this.play,
+        '1': this.set_difficulty,
+    // else if (select === 2) this.set_language();
+    // else if (select === 3) this.printStats();
+    // else if (select === 4) this.clearStats();
+    // else if (select === 5) this._splashScreen();
+    // else if (select > 5) this.exit();
+    }
     
     this._splashScreen()
   }
@@ -48,13 +58,14 @@ module.exports = class Game {
       TEXT.EXIT
     ], TEXT.YOUR_CHOICE, { cancel: false });
     
-    if (select === 0) this.play();
-    else if (select === 1) this.set_difficulty();
-    else if (select === 2) this.set_language();
-    else if (select === 3) this.printStats();
-    else if (select === 4) this.clearStats();
-    else if (select === 5) this._splashScreen();
-    else if (select > 5) this.exit();
+    this.cmds[select]()
+    // if (select === 0) this.play();
+    // else if (select === 1) this.set_difficulty();
+    // else if (select === 2) this.set_language();
+    // else if (select === 3) this.printStats();
+    // else if (select === 4) this.clearStats();
+    // else if (select === 5) this._splashScreen();
+    // else if (select > 5) this.exit();
   }
 
   play () {
