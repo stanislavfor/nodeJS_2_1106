@@ -2,6 +2,7 @@ let generator = require("./components/generator")
 let compare = require("./components/compare")
 let textPresets = require("./assets/presets")
 let colorizer = require("./components/colorText")
+let log = require("./components/logger")
 
 game = () => {
     //let textPresets = require("./assets/presets")
@@ -16,7 +17,7 @@ game = () => {
 
     textPresets.textYellow.text = `Игра 'Быки и коровы'\nУгадайте 4х значное число. Для выхода нажмите ctrl+c\n`
     colorizer.print(textPresets.textYellow)
-    
+
     colorizer.resetStyleEnter()
 
     textPresets.textYellow.text = `Угадайте число: `
@@ -42,6 +43,7 @@ game = () => {
             colorizer.print(textPresets.textYellow)
             colorizer.resetStyleEnter()
             process.exit();
+            log(gamerNumber,0,4,"Вы выиграли!")
         }else{
             let {cows,bulls} = compare(gamerNumber, robotNumber )
             //process.stdout.write(`Проверка robot: ${robotNumber}; key: ${gamerNumber};\n` )
@@ -57,9 +59,24 @@ game = () => {
             colorizer.resetStyleEnter()
             colorizer.resetStyleEnter()
 
+            log(gamerNumber,cows,bulls,"Игрок не угадал")
+
             textPresets.textYellow.text = `Новая попытка: `
             colorizer.print(textPresets.textYellow)
-            ///colorizer.resetStyleEnter()
+
+            // let promise = new Promise((resolve, reject) => {
+            //     log(gamerNumber,cows,bulls,"Игрок не угадал")
+            //     resolve("log updated")
+            //     return "log updated"
+            // });
+            // promise.then((val) => {
+            //     //console.log("!!!" + val)
+            //     textPresets.textYellow.text = `Новая попытка: `
+            //     colorizer.print(textPresets.textYellow)
+            //     ///colorizer.resetStyleEnter()
+            // })
+
+            
 
         }
         gamerNumber = ""

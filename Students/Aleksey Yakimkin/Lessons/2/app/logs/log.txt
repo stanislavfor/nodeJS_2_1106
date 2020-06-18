@@ -1,0 +1,17 @@
+undefined
+    
+
+        *** ROUND ***
+
+        User enters: 5678;
+
+        Cows: 1;
+
+        Bulls: 0;
+
+        Status: Игрок не угадал;
+
+        time: Anno Domini 18 2020, 12:00:00
+
+
+    
