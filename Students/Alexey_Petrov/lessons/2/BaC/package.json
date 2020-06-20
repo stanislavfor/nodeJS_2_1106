@@ -1,0 +1,21 @@
+{
+  "name": "hw",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "avp",
+  "license": "ISC",
+  "dependencies": {
+    "ansi": "^0.3.1",
+    "clear": "^0.1.0",
+    "moment": "^2.26.0",
+    "prompt-radio": "^1.2.1",
+    "prompt-sync": "^4.2.0",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {},
+  "description": ""
+}
