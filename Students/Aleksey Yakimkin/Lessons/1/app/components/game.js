@@ -1,8 +1,41 @@
 const readline = require('readline');
 
+
 let colorizer = require("./colorText")
 
 let textPresets = require("../assets/presets")
+
+let http = require("http")
+let colorizer = require("./colorText")
+
+let textError = {
+    text: "",
+    colorText: 'black',
+    colorBg: 'red',
+}
+let textRedYell = {
+    text: "",
+    colorText: 'yellow',
+    colorBg: 'red',
+}
+let textBlue = {
+    text: "",
+    colorText: 'black',
+    colorBg:'blue'
+}
+let bgYellow = {
+    text: "",
+    colorText: 'black',
+    colorBg:'yellow'
+}
+let textYellow = {
+    text: "",
+    colorText: 'yellow',
+    colorBg:'black'
+}
+let textStandart = {
+    text: "",
+}
 
 let variants = ["Камень", "Ножницы", "Бумага"]
 
@@ -31,14 +64,23 @@ function gameMain(variant){
         if(variants[variant] !== undefined && variant != null){
             findOut(robotVarian, variant, variants)
         }else{
+
             textPresets.textYellow.text = `Exit`
             colorizer(textPresets.textYellow)
+            textYellow.text = `Exit`
+            colorizer(textYellow)
+
             resetStyleEnter()
             //finish = true
         }
     //}
+
     textPresets.bgYellow.text = `*** game over ***`
     colorizer(textPresets.bgYellow)
+
+    bgYellow.text = `*** game over ***`
+    colorizer(bgYellow)
+
     resetStyleEnter()
 
 }
@@ -54,12 +96,17 @@ function findOut(robotVarian, variant, variants){
     textPresets.textStandart.text = ` : `
     colorizer(textPresets.textStandart)
 
+    textStandart.text = ` : `
+    colorizer(textStandart)
+
+
     textRedYell.text = `Игрок ${variants[variant]}`
     colorizer(textRedYell)
 
     resetStyleEnter()
 
     if(robotVarian == 0 && variant==0 || robotVarian == 1 && variant==1 || robotVarian == 2 && variant==2){
+
         textPresets.textStandart.text = `Результат: Ничья`
         colorizer(textPresets.textStandart)
     }else if(robotVarian == 0 && variant==1 || robotVarian == 1 && variant==2 || robotVarian == 2 && variant==0){
@@ -68,6 +115,16 @@ function findOut(robotVarian, variant, variants){
     }else if(robotVarian == 0 && variant==2 || robotVarian == 1 && variant==0 || robotVarian == 2 && variant==1){
         textPresets.textYello.text = `Результат: Игрок выиграл!`
         colorizer(textPresets.textYello)
+
+        textStandart.text = `Результат: Ничья`
+        colorizer(textStandart)
+    }else if(robotVarian == 0 && variant==1 || robotVarian == 1 && variant==2 || robotVarian == 2 && variant==0){
+        textError.text = `Результат: Игрок проиграл!`
+        colorizer(textError)
+    }else if(robotVarian == 0 && variant==2 || robotVarian == 1 && variant==0 || robotVarian == 2 && variant==1){
+        textYellow.text = `Результат: Игрок выиграл!`
+        colorizer(textYellow)
+
     }
     resetStyleEnter()
 }
@@ -79,6 +136,10 @@ function randomize(){
 
 function resetStyleEnter() {
     //reset
+
     textPresets.textStandart.text = `\n`
     colorizer(textPresets.textStandart)
+
+    textStandart.text = `\n`
+    colorizer(textStandart)
 }
