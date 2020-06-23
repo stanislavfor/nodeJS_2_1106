@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import UserInput from "../UserInput";
 import Rules from "../Rules";
+import Header from "../Header";
+import Statistics from "../Statistics";
 
 import randomizer from "../../utils/randomizer";
 import checker from "../../utils/checker";
 
-import { Button, Card, Accordion, Jumbotron, Container } from "react-bootstrap";
+import { Button, Card, Accordion } from "react-bootstrap";
 
 class App extends Component {
   constructor() {
@@ -37,26 +39,8 @@ class App extends Component {
 
     return (
       <div className="container">
-        <Jumbotron>
-          <h1>Быки и Коровы</h1>
-          <h6>Добро пожаловать в игру "Быки и Коровы"!</h6>
-          <p>
-            Чтобы начать игру, жми кнопку ниже! Если не знаком с правилами,
-            внизу все написано, разворачивай "Правила игры" и читай!.
-          </p>
-          <p>
-            <Button variant="success" onClick={this.handleGuessNumber}>
-              Начать игру!
-            </Button>
-          </p>
-        </Jumbotron>
-        <Jumbotron fluid>
-          <Container>
-            <p>{`Твои быки - ${bulls}`}</p>
-            <p>{`Твои коровы - ${cows}`}</p>
-            <p>{`Твой статус - ${status}`}</p>
-          </Container>
-        </Jumbotron>
+        <Header handleGuessNumber={this.handleGuessNumber} />
+        <Statistics bulls={bulls} cows={cows} status={status} />
         <Accordion defaultActiveKey="0">
           <Card>
             <Card.Header>
