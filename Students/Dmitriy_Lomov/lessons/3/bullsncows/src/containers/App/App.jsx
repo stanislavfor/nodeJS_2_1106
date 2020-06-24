@@ -43,7 +43,7 @@ class App extends Component {
         attempt: value,
         bulls: bulls,
         cows: cows,
-        rounds: state.rounds--,
+        rounds: state.rounds - 1,
       };
     });
   };
