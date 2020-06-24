@@ -1,19 +1,23 @@
 {
-  "name": "3",
+  "name": "server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "api": "nodemon server"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "*.json"
+    ]
+  },
   "keywords": [],
-  "author": "",
+  "author": "Alexey Petrov",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.26.0",
     "nodemon": "^2.0.4"
   },
+  "devDependencies": {},
   "description": ""
 }
