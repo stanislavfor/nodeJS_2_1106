@@ -1,0 +1,100 @@
+body,
+html {
+    height: 100%;
+}
+body,
+html,
+p,
+a,
+div,
+h2,
+h3,
+figure,
+ol,
+ul {
+    margin: 0;
+    padding: 0;
+}
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+body {
+    background-color: #f8f8f8;
+    font-family: Roboto,Tahoma,sans-serif;
+}
+div {
+    /*display: block;
+    float: left;*/
+}
+.show{
+    display:block!important;
+}
+.hide{
+    display:none!important;
+}
+.container{
+    width:1200px;
+    margin:0 auto; 
+    padding: 0 15px;
+}
+header {
+    height:10px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px!important;
+}
+main {
+    padding-bottom: 10px;
+}
+footer {
+    height: 100px;
+    background-color: #414141;
+    color:aliceblue;
+    text-align: right;
+    padding:10px 15px;
+}
+.fade-enter-active{
+    transition: opacity .9s;
+}
+.fade-enter{
+    opacity:0;
+}
+.fade-enter-to{
+
+}
+.fade-leave{
+
+}
+.fade-leave-active{
+     transition: opacity .9s; 
+}
+.fade-leave-to{
+    opacity:0.9;
+}
+.allertMessage{
+    display: block;
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    background-color: #f1453c;
+    padding:20px;
+    width: 400px;
+    left:0;
+    top:0;
+
+}
+.game-result li {
+    list-style-type: none;
+    padding-bottom: 5px;
+}
+.gamer-form {
+    padding-bottom: 15px;
+}
+h2,p {
+    padding-bottom: 10px;
+}
+.start-button {
+    margin-bottom: 10px;
+}
