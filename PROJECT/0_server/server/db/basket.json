@@ -11,6 +11,12 @@
    "product_name": "Mouse",
    "price": 10,
    "quantity": 1
+  },
+  {
+   "id_product": 7,
+   "product_name": "USB-camera",
+   "price": 18,
+   "quantity": 1
   }
  ]
 }
