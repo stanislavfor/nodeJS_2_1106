@@ -1,0 +1,17 @@
+{
+  "name": "Lesson_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ansi": "^0.3.1",
+    "moment": "^2.27.0",
+    "prompt": "^1.0.0"
+  }
+}
