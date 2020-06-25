@@ -1,15 +1,15 @@
 module.exports = () => {
     let number = [];
-    for(let i = 0; i < 4; i++) {
+    while(number.length < 4) {
         let randomNumber = Math.floor(Math.random() * 10);
 
-        if(i == 0) {
-            number[i] = randomNumber;
+        if(number.length == 0) {
+            number.push(randomNumber);
         } else {
             while(number.indexOf(randomNumber) != -1) {
                 randomNumber = Math.floor(Math.random() * 10);
             };
-            number[i] = randomNumber;
+            number.push(randomNumber);
         };
     };
     return number;
