@@ -1,6 +1,6 @@
 import React from "react";
-import Statistics from "../../components/Statistics";
-import ResultsView from "../../components/ResultsView";
+import Statistics from "../Statistics";
+import ResultsView from "../ResultsView";
 
 export default function GameStatus({
   attempt,

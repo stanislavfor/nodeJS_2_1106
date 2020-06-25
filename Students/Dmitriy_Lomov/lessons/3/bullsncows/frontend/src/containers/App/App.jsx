@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Header from "../../components/Header";
-import GameStatus from "../GameStatus";
+import GameStatus from "../../components/GameStatus";
 import MainView from "../../components/MainView";
 
 import randomizer from "../../utils/randomizer";
@@ -33,11 +33,11 @@ class App extends Component {
     });
   };
 
-  checkAttempt = (bulls, cows, value) => {
+  checkAttempt = async (bulls, cows, value) => {
     const { rounds } = this.state;
     const isWin = checker(bulls, rounds);
 
-    this.setState((state) => {
+    await this.setState((state) => {
       return {
         gameStatus: isWin,
         attempt: value,
@@ -46,6 +46,22 @@ class App extends Component {
         rounds: state.rounds - 1,
       };
     });
+
+    if (!isWin || rounds === 1) {
+      this.postLog();
+    }
+  };
+
+  postLog = () => {
+    const { guess, attempt, rounds, gameStatus } = this.state;
+
+    return fetch("/logs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ guess, attempt, rounds, gameStatus }),
+    }).then((d) => d.json());
   };
 
   render() {
