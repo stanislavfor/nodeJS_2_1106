@@ -4,27 +4,24 @@ function makeGetRequest(url,method) {
         if (window.XMLHttpRequest) {
             xhr = new window.XMLHttpRequest();
         } else  {
-            xhr = new window.ActiveXObject("Microsoft.XMLHTTP")
+            xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
         }
             
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status !== 200){
-                    reject(xhr.responceText)
+                    reject(xhr.responceText);
                 }
-            
-                const body = JSON.parse(xhr.responseText)
-                resolve(body)
-    
+                const body = JSON.parse(xhr.responseText);
+                resolve(body);
             }
         };
         xhr.onerror = function(err){
-            reject(err)
+            reject(err);
         }
         xhr.open(method, url);
         xhr.send();
-
-    })
+    });
 }
 
 function makePostRequest(url,method,data) {
@@ -33,30 +30,26 @@ function makePostRequest(url,method,data) {
         if (window.XMLHttpRequest) {
             xhr = new window.XMLHttpRequest();
         } else  {
-            xhr = new window.ActiveXObject("Microsoft.XMLHTTP")
+            xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
         }
-            
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status !== 200){
-                    reject(xhr.responceText)
+                    reject(xhr.responceText);
                 }
-            
-                const body = JSON.parse(xhr.responseText)
-                resolve(body)
-    
+                const body = JSON.parse(xhr.responseText);
+                resolve(body);
             }
         };
         xhr.onerror = function(err){
-            reject(err)
+            reject(err);
         }
         xhr.open(method, url);
         xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-        console.dir(data)
-        console.log(JSON.stringify(data))
+        console.dir(data);
+        console.log(JSON.stringify(data));
         xhr.send(JSON.stringify(data));
-
-    })
+    });
 }
 
 Vue.component('alert-window', {
@@ -69,10 +62,10 @@ Vue.component('alert-window', {
             return this.$store.state.error != null && this.$store.state.error != "";
         },
         error: {
-            get(){
+            get() {
                 return this.$store.state.error;
             },
-            set(error){
+            set(error) {
                 return this.$store.commit('SET_ERROR',error);
             }
         },
@@ -95,7 +88,7 @@ Vue.component('alert-window', {
             <div class="allertMessage" v-if="showEr">Ошибка: {{ error }}</div>
         </transition>
     `
-})
+});
 
 const logPage = Vue.component('log-page', {
     template:` 
@@ -155,7 +148,6 @@ const gamePage = Vue.component('game-page', {
         attempts: 0,
         cows: 0,
         bulls: 0,
-        // results: []
     }),
     methods: {
         compareNumbers(e) {
@@ -212,7 +204,6 @@ const gamePage = Vue.component('game-page', {
                         winner: ${results.winner}\n\n
                     `
                 }});
-            // console.log(this.results[this.results.length-1]);
         },
         robotGenerate() {
             let val =  Math.floor (Math.random() * 9999) + "";
@@ -231,7 +222,7 @@ const gamePage = Vue.component('game-page', {
     },
     computed: {
         upperCaseName() {
-            return this.name.toUpperCase()
+            return this.name.toUpperCase();
         }
     },
     mounted() {
@@ -283,26 +274,26 @@ const store = new Vuex.Store({
     },
     actions: {
         addError(context,error) {
-            console.log(error)
+            console.log(error);
             context.commit('SET_ERROR', error);
         },
         async listLogs(context) {//callback
             try{
-                const logs = await makeGetRequest(`/api/log`, 'GET') //async makeGetRequest  `${API_URL}catalog.json`
+                const logs = await makeGetRequest(`/api/log`, 'GET'); //async makeGetRequest  `${API_URL}catalog.json`
                 context.commit('SET_LOGS', logs);
             }catch(e){
-                console.error(e)
+                console.error(e);//debug
                 this.$refs.notification.showError({message:"Сервер недоступен"});
             }
 
         },
         async addItemToLog(context,logItem) {
             try{
-                    context.commit('ADD_LOG_ITEM', logItem.logItem)
-                    logItems = await makePostRequest(`/api/log`, 'POST' , logItem.logItem) //async makeGetRequest  `${API_URL}catalog.json`
-                    console.dir(logItems)
+                    context.commit('ADD_LOG_ITEM', logItem.logItem);
+                    logItems = await makePostRequest(`/api/log`, 'POST' , logItem.logItem); //async makeGetRequest  `${API_URL}catalog.json`
+                    console.dir(logItems);//debug
             }catch(e){
-                console.error(e)
+                console.error(e);//debug
                 this.$refs.notification.showError({message:"Сервер недоступен"});
             }
         }
