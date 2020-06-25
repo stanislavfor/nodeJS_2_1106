@@ -1,161 +1,151 @@
-﻿const rls = require('readline-sync')
-const dayjs = require('dayjs')
+﻿const rls = require('readline-sync');
+const dayjs = require('dayjs');
 
-const { generator, check_repeats, check_result } = require('./functions')
-const { RESET, BRIGHT, RED, GREEN, YELLOW } = require('./ansi_styles.js')
-const { read_logs, write_logs } = require('./logger.js')
-const { ENG, RUS } = require('./game_strings.js')
-
-
-let TEXT = ENG
+const { generator, check_repeats, check_result } = require('./functions');
+const { RESET, BRIGHT, RED, GREEN, YELLOW } = require('./ansi_styles.js');
+const { read_logs, write_logs } = require('./logger.js');
+const { ENG, RUS } = require('./game_strings.js');
 
 module.exports = class Game {
-  constructor (difficulty = 4) {
-    this.secret = ''
-    this.hardness = difficulty // тут решаем сколько символов надо отгадывать
-    this.turns = 0
-    this.player_text = null
-    this.debug = true
-    this.isEnglish = true
-    this.stats = []
-    this.cmds = {
-        '0': this.play,
-        '1': this.set_difficulty,
-    // else if (select === 2) this.set_language();
-    // else if (select === 3) this.printStats();
-    // else if (select === 4) this.clearStats();
-    // else if (select === 5) this._splashScreen();
-    // else if (select > 5) this.exit();
-    }
-    
-    this._splashScreen()
-  }
+  constructor (difficulty = 10, debug = true) {
+    this.secret = '';
+    this.hardness = difficulty; // тут решаем какая система счисления
+    this.turns = 0;
+    this.player_text = null;
+    this.debug = debug;
+    this.txt = ENG;
+    this.stats = [];
+    this.cmds = [
+      this.play,
+      this.set_difficulty,
+      this.set_language,
+      this.printStats,
+      this.clearStats,
+      this._splashScreen,
+      this.exit
+    ];
+            
+    this._splashScreen();
+  };
 
-  _splashScreen () {
+  _splashScreen = () => {
     console.clear();
     console.log(
-      '\n', BRIGHT, TEXT.GAMENAME, RESET, '\n\n',
-      YELLOW + TEXT.RULES + RESET, '\n',
-      TEXT.RULE1, '\n\n',
-      TEXT.RULE2, '\n',
-      TEXT.RULE3, '\n'
+      '\n', BRIGHT, this.txt.GAMENAME, RESET, '\n\n',
+      YELLOW + this.txt.RULES + RESET, '\n',
+      this.txt.RULE1, '\n\n',
+      this.txt.RULE2, '\n',
+      this.txt.RULE3, '\n'
     );
 
-    rls.keyInPause(TEXT.PRESSSPACE, {guide: false});
+    rls.keyInPause(this.txt.PRESSSPACE, {guide: false});
     this.menu();
   }
 
-  menu () {
+  menu = () => {
     console.clear();
-    console.log('\n', BRIGHT, YELLOW, TEXT.MENU_TEXT, RESET);
+    console.log('\n', BRIGHT, YELLOW, this.txt.MENU_TEXT, RESET);
     const select = rls.keyInSelect([
-      TEXT.MENU_PLAY,
-      TEXT.MENU_DIFF.replace('%HARDNESS', YELLOW + this.hardness + RESET),
-      TEXT.MENU_LANG.replace('%CURRENT', YELLOW + (this.isEnglish ? 'ENG' : 'RUS') + RESET),
-      TEXT.MENU_SHOWSTATS,
-      TEXT.MENU_CLEARSTATS,
-      TEXT.MENU_SHOWRULES,
-      TEXT.EXIT
-    ], TEXT.YOUR_CHOICE, { cancel: false });
+      this.txt.MENU_PLAY,
+      this.txt.MENU_DIFF.replace('%HARDNESS', YELLOW + this.hardness + RESET),
+      this.txt.MENU_LANG.replace('%CURRENT', YELLOW + (this.txt === ENG ? 'ENG' : 'RUS') + RESET),
+      this.txt.MENU_SHOWSTATS,
+      this.txt.MENU_CLEARSTATS,
+      this.txt.MENU_SHOWRULES,
+      this.txt.EXIT
+    ], this.txt.YOUR_CHOICE, { cancel: false });
     
     this.cmds[select]()
-    // if (select === 0) this.play();
-    // else if (select === 1) this.set_difficulty();
-    // else if (select === 2) this.set_language();
-    // else if (select === 3) this.printStats();
-    // else if (select === 4) this.clearStats();
-    // else if (select === 5) this._splashScreen();
-    // else if (select > 5) this.exit();
   }
 
-  play () {
+  play = () => {
     console.clear();
+    console.log(this)
     this.game_reset();
     this.player_turn();
     this.afterGameMenu();
   }
 
-  set_difficulty (key) {
+  set_difficulty = (key) => {
     console.clear();
     console.log(
-      '\n', BRIGHT, TEXT.DIFFICULTY_TEXT, RESET, '\n\n',
-      `[${YELLOW}1${RESET}] <-- --> [${YELLOW}2${RESET}] ${TEXT.ACCEPT}: [${YELLOW + TEXT.SPACE + RESET}]\n\n`
+      '\n', BRIGHT, this.txt.DIFFICULTY_TEXT, RESET, '\n\n',
+      `[${YELLOW}1${RESET}] <-- --> [${YELLOW}2${RESET}] ${this.txt.ACCEPT}: [${YELLOW + this.txt.SPACE + RESET}]\n\n`
     );
     while (true) {
       console.log('   \x1B[1A\x1B[K|' + GREEN + BRIGHT +
-        (new Array(this.hardness + 1)).join('==') + RESET +
-        (new Array(10 - this.hardness + 1)).join('..') + '| ' + YELLOW + this.hardness + RESET
+        (new Array(this.hardness-5)).join('==') + RESET +
+        (new Array(16 - this.hardness + 1)).join('..') + '| ' + YELLOW + this.hardness + RESET
       );
       
       key = rls.keyIn('', {hideEchoBack: true, mask: '', limit: '12 '});
 
-      if (key === '1' && this.hardness > 1) this.hardness--;
-      else if (key === '2' && this.hardness < 10) this.hardness++;
+      if (key === '1' && this.hardness > 6) this.hardness--;
+      else if (key === '2' && this.hardness < 16) this.hardness++;
       else if (key === ' ') break; 
     }
-    return this.menu();
+    this.menu();
   }
 
-  set_language() {
-    this.isEnglish = !this.isEnglish
-    TEXT = this.isEnglish ? ENG : RUS;
-    return this.menu();
+  set_language = () => {
+    this.txt = this.txt === ENG ? RUS : ENG;
+    this.menu();
   }
   
-  game_reset () {
+  game_reset = () => {
     this.secret = generator(this.hardness);
-    console.log(BRIGHT + RED + 'DEBUG:' + RESET, 
-      this.debug ? TEXT.DEBUG_TEXT.replace('%CODE', YELLOW + this.secret + RESET) : '',
-    );
+    this.debug ? console.log(BRIGHT + RED + 'DEBUG:' + RESET, 
+      this.txt.DEBUG_TEXT.replace('%CODE', YELLOW + this.secret + RESET)
+    ) : null;
     this.turns = 0;
   }
 
-  player_turn (text = '') {
-    let input = rls.question((text ? text : TEXT.SOLVE_TEXT + '\n').replace('%X', YELLOW + this.hardness + RESET));
+  player_turn = (text = '') => {
+    let input = rls.question((text ? text : this.txt.SOLVE_TEXT + '\n').replace('%X', YELLOW + '0123456789ABCDEF'[this.hardness-1] + RESET)).toUpperCase();
     this.turns++;
 
-    if (input === '') {
-      console.log(TEXT.SURRENDER
+    if (input === '' && rls.keyInYNStrict(BRIGHT + this.txt.RLY_SURREND + RESET)) {
+      console.log(this.txt.SURRENDER
         .replace('%TURNS', GREEN + this.turns + RESET)
         .replace('%SECRET', YELLOW + this.secret + RESET)
       );
       write_logs({ date: dayjs().format('DD/MM/YYYY HH:mm:ss'), win: 0, turns: this.turns, secret: this.secret });
-      return
-    }
+      return;
+    };
 
-    if (input != null && input.length == this.hardness && !check_repeats(input)) {
+    if (input != null && input.length === 4 && !check_repeats(input)) {
       const { win, bulls, cows } = check_result(input, this.secret);
         if (win) {
           console.log(
-            BRIGHT + GREEN + TEXT.WIN_TEXT1.replace('%SECRET', YELLOW + this.secret + GREEN), RESET + '\n' +
-            TEXT.WIN_TEXT2.replace('%TURNS', YELLOW + this.turns + RESET)
+            BRIGHT + GREEN + this.txt.WIN_TEXT1.replace('%SECRET', YELLOW + this.secret + GREEN), RESET + '\n' +
+            this.txt.WIN_TEXT2.replace('%TURNS', YELLOW + this.turns + RESET)
           );
           write_logs({ date: dayjs().format('DD/MM/YYYY HH:mm:ss'), win, turns: this.turns, secret: this.secret });
         } else {
           this.player_turn(
-            TEXT.SOLVE_TURN
+            this.txt.SOLVE_TURN
               .replace('%INPUT', GREEN + BRIGHT + input + RESET)
               .replace('%BULLS', YELLOW + bulls + RESET)
               .replace('%COWS', YELLOW + cows + RESET)
             + '\n'
           );
-        }
+        };
     } else {
-      this.player_turn(TEXT.SOLVE_ERROR + '\n');
-    }
-  }
+      this.player_turn(this.txt.SOLVE_ERROR + '\n');
+    };
+  };
 
-  printStats () {
+  printStats = () => {
     let stats = read_logs();
     let wins = 0, loses = 0, winrate, games = '';
     console.clear();
-    console.log(BRIGHT, TEXT.STATS, RESET);
+    console.log(BRIGHT, this.txt.STATS, RESET);
 
     if (stats.length) {
       stats.forEach(stat => {
         stat.win ? wins++ : loses++;
-        games += stat.date + ' - ' + BRIGHT + (stat.win ? GREEN + TEXT.WIN : RED + TEXT.LOSE) + RESET + ' - ' + 
-          TEXT.STAT_TEXT
+        games += stat.date + ' - ' + BRIGHT + (stat.win ? GREEN + this.txt.WIN : RED + this.txt.LOSE) + RESET + ' - ' + 
+          this.txt.STAT_TEXT
             .replace('%SECRET', YELLOW + stat.secret + RESET)
             .replace('%TURNS', YELLOW + stat.turns + RESET)
             .replace('%HARDNESS', YELLOW + stat.secret.length + RESET + '\n')
@@ -163,7 +153,7 @@ module.exports = class Game {
   
       winrate = (wins / (wins + loses) * 100).toFixed(0);
       console.log(
-        TEXT.STATS_SUMMARY
+        this.txt.STATS_SUMMARY
           .replace('%ALL', YELLOW + (wins+loses) + RESET)
           .replace('%WINS', GREEN + wins + RESET)
           .replace('%WINRATE', GREEN + winrate + '%' + RESET)
@@ -171,30 +161,30 @@ module.exports = class Game {
         + '\n' + games
       );
     } else {
-      console.log(TEXT.NO_STATS);
-    }
+      console.log(this.txt.NO_STATS);
+    };
 
-    rls.keyInPause(TEXT.PRESSSPACE, {guide: false});
-    return this.menu();
-  }
+    rls.keyInPause(this.txt.PRESSSPACE, {guide: false});
+    this.menu();
+  };
 
-  clearStats () {
+  clearStats = () => {
     write_logs();
     console.clear();
-    console.log(YELLOW + TEXT.STATS_IS_CLEAR + RESET + '\n');
-    rls.keyInPause(TEXT.PRESSSPACE, {guide: false});
-    return this.menu();
-  }
+    console.log(YELLOW + this.txt.STATS_IS_CLEAR + RESET + '\n');
+    rls.keyInPause(this.txt.PRESSSPACE, {guide: false});
+    this.menu();
+  };
 
-  afterGameMenu () {
-    if (rls.keyInYNStrict(BRIGHT + TEXT.PLAY_AGAIN + RESET)) {
-      return this.play();
+  afterGameMenu = () => {
+    if (rls.keyInYNStrict(BRIGHT + this.txt.PLAY_AGAIN + RESET)) {
+      this.play();
     } else {
-      return this.menu();
-    }
-  }
+      this.menu();
+    };
+  };
 
-  exit () {
-    console.log('\n', YELLOW, BRIGHT, TEXT.GAME, TEXT.EXIT, RESET, '\n');
-  }
-}
+  exit = () => {
+    console.log('\n', YELLOW, BRIGHT, this.txt.GAME, this.txt.EXIT, RESET, '\n');
+  };
+};
