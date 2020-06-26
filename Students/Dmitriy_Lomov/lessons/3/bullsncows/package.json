@@ -1,0 +1,12 @@
+{
+  "name": "bullsncows",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "game":"cd backend && npm i && npm run server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

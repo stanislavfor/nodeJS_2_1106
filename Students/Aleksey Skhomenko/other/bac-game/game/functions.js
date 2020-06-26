@@ -5,22 +5,19 @@ module.exports = {
             if (str.indexOf(str[i], i + 1) >= 0) {
                 return true;
             }
-        }
-        
+        };
         return false;
     },
-    // генерация пароля из второго аргумента без повторяющихся символов
-    generator (length, passlist = "0123456789") {
-        let base = Array.from(passlist);
+    // генерация 4 значного пароля в рамках заданой системы счисления
+    generator (system = 10) {
+        let base = [...'0123456789ABCDEF'].slice(0, system)
         let res = '';
-        if (isNaN(length) || length < 1) length = 4;
-        if (length > base.length) length = base.length;
-      
-        for (let i = 0; i < length; i++) {
-            n = Math.floor(Math.random() * base.length);
-            res += base[n];
-            base.splice(n, 1);
-        }
+        let n;
+
+        while (res.length < 4) {
+            n = ~~(Math.random() * system);
+            res += base.splice(n, 1);
+        };
       
         return res;
     },
@@ -32,9 +29,8 @@ module.exports = {
                 bulls++;
             } else if (secret.indexOf(input[i]) >= 0) {
                 cows++;
-            }
-        }
-
+            };
+        };
         return (bulls == secret.length) ? { win: 1 } : { bulls, cows };
-      }
-} 
+    }
+} ;
