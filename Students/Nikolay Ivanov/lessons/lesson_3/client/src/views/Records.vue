@@ -5,13 +5,25 @@
 </template>
 
 <script>
-// @ is an alias to /src
-//import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Records',
-//   components: {
-//     HelloWorld
-//   }
+  mounted() {
+   
+    this.sendToServer();
+  },
+  methods: {
+    sendToServer() {
+        console.log('sendToServer');
+        let item = 'test';
+        fetch('/api/', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({text: item})
+        })
+        .then(data => console.log(data))
+    }
+  }
 }
 </script>
