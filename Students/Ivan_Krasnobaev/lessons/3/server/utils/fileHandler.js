@@ -1,16 +1,23 @@
 const fs = require("fs");
 
 module.exports = {
-  read(file) {
-    return fs.readFile(file, "utf-8", (err, data) => (!err ? data : err));
-  },
-  readAndWrite(file, data) {
-    fs.readFile(file, "utf-8", (err, file_data) => {
+  rewrite(url, res) {
+    fs.readFile(url, 'utf-8', (err, data) => {
       if (!err) {
-        fs.writeFile(file, file_data + data, (err) =>
-          !err ? "log updated" : "Error"
+        let logs = !data || data.length === 0 ? [] : JSON.parse(data);
+        logs.push(res);
+
+        fs.writeFile(url, JSON.stringify(logs, null, ""), (err) =>
+          !err ? console.log("log updated") : console.log("Error")
         );
-      } else console.log(`Error read file: ${err}`);
+      }
     });
   },
+  read(url) {
+    fs.readFile(url, 'utf-8', (err, data) => {
+      if (!err) {
+        return !data || data.length === 0 ? [] : JSON.parse(data);
+      }
+    })
+  }
 };
