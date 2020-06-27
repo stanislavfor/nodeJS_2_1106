@@ -1,21 +1,26 @@
-const express = require('express')
+const express = require('express');
+const fs = require('fs');
+const logger = require('./utils/logger');
+const fh = require('./utils/fileHandler');
 
 const server = express();
 server.use(express.json());
 //server.use('/', express.static('./server'))
-server.post('/', (req, res) => {
-    // let str = req.body.text;
-    // str = 'Server has received: ' + str;
-
-    res.json({ answer: 'test' })
+server.get('/log/', (req, res) => {
+    // console.log('getlog');
+    // let result = fh.read('./log.txt');
+    // console.log(result)
+    fs.readFile('./log.txt', 'utf-8', (err, data) => {
+        if (!err) {
+            res.send(data);
+        }
+    })
 });
-server.get('/', (req, res) => {
-    let str = req.body.text;
-    str = 'Server has received: ' + str;
-
-    res.json({ answer: str })
+server.post('/log/', (req, res) => {
+    logger(req.body);
+    res.send('ok');
 });
 
-server.listen(0, () => {
+server.listen(8080, () => {
     console.log('server at 8080')
 });

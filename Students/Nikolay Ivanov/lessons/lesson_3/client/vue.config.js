@@ -1,10 +1,9 @@
 module.exports = {
     devServer: {
         port: 3000,
-        // publicPath: '/',
+        publicPath: '/',
         
-        proxy: 
-         {
+        proxy: {
             '/api': {
                 target: 'http://localhost:8080/',
                 pathRewrite: { '^/api' : '' },
@@ -13,7 +12,7 @@ module.exports = {
             }
         }
     },
-    // configureWebpack: {
-    //     devtool: 'source-map'
-    // }
+    configureWebpack: {
+        devtool: 'source-map'
+    }
 }

@@ -1,29 +1,38 @@
 <template>
   <div class="records">
-    <h1>This is an Records page</h1>
+    <h2>Таблица рекордов</h2>
+    <textarea rows="10" v-model="records"></textarea>
+    <router-link to="/">На главную</router-link>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Records',
+  data() {
+    return {
+      records: '',
+    }
+  },
   mounted() {
-   
-    this.sendToServer();
+    this.getRecords(); 
   },
   methods: {
-    sendToServer() {
-        console.log('sendToServer');
-        let item = 'test';
-        fetch('/api/', {
-            method: 'POST',
+    getRecords() {
+        fetch('/api/log/', {
+            method: 'GET',
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({text: item})
         })
-        .then(data => console.log(data))
+        .then(res => res.text())
+        .then(data => this.records = data)
     }
   }
 }
 </script>
+<style scoped>
+textarea {
+  width: 100%;
+}
+</style>
