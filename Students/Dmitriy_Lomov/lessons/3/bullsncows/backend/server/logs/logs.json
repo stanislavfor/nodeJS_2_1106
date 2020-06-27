@@ -1,62 +1,30 @@
 [
  {
-  "guessedNumber": [
-   6,
-   4,
-   0,
-   2
+  "guessedNumber": "8793",
+  "userAttempts": [
+   {
+    "attempt": "8714",
+    "bulls": 2,
+    "cows": 0
+   },
+   {
+    "attempt": "8651",
+    "bulls": 1,
+    "cows": 0
+   },
+   {
+    "attempt": "3564",
+    "bulls": 0,
+    "cows": 1
+   },
+   {
+    "attempt": "8793",
+    "bulls": 4,
+    "cows": 0
+   }
   ],
-  "userAttempt": "6402",
-  "roundsLeft": 4,
+  "roundsLeft": 6,
   "gameStatus": "Player WIN",
-  "time": "25 06 2020, 6:13:09"
- },
- {
-  "guessedNumber": [
-   6,
-   8,
-   3,
-   5
-  ],
-  "userAttempt": "1142",
-  "roundsLeft": 0,
-  "gameStatus": "Player lose.",
-  "time": "25 06 2020, 6:17:24"
- },
- {
-  "guessedNumber": [
-   4,
-   7,
-   8,
-   9
-  ],
-  "userAttempt": "6784",
-  "roundsLeft": 0,
-  "gameStatus": "Player lose.",
-  "time": "25 06 2020, 6:29:27"
- },
- {
-  "guessedNumber": [
-   4,
-   6,
-   0,
-   5
-  ],
-  "userAttempt": "4056",
-  "roundsLeft": 0,
-  "gameStatus": "Player lose.",
-  "time": "25 06 2020, 6:37:00"
- },
- {
-  "guessedNumber": [
-   6,
-   4,
-   2,
-   3
-  ],
-  "userAttempt": "6423",
-  "roundsLeft": 3,
-  "gameStatus": "Player WIN",
-  "time": "25 06 2020, 6:47:23"
+  "time": "27 06 2020, 3:35:35"
  }
 ]
