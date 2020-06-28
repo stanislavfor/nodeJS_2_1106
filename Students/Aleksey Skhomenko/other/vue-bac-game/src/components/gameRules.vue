@@ -36,7 +36,6 @@
           <v-spacer />
           <v-btn
             dark
-
             width="200"
             @click="dialog = false"
           >
