@@ -15,6 +15,7 @@
         <v-list-group
           v-for="game of games"
           :key="game.id"
+          :value="game.id == games.length"
           prepend-icon="mdi-gamepad"
           append-icon=""
         >
@@ -26,7 +27,9 @@
             </v-list-item-content>
           </template>
           <v-list-item v-if="!game.turns.length">
-            Не сделано ни одного хода.
+            <v-list-item-content>
+              Не сделано ни одного хода.
+            </v-list-item-content>
           </v-list-item>
           <v-list-item
             v-for="data of game.turns"
@@ -72,7 +75,13 @@
           class="result text-center"
         >
             <v-spacer />
-            <v-col cols="12" md="3" sm="3" class="py-0">
+            <v-col cols="12" md="2" sm="2" class="py-0">
+              <v-icon left>mdi-strategy</v-icon>
+              <p>Ходов осталось:
+                {{ 10 - games[games.length - 1].turns.length }}
+              </p>
+            </v-col>
+            <v-col cols="12" md="2" sm="2" class="py-0">
               <v-icon left>mdi-eye-outline</v-icon>
               <p>Введено:
                 {{ games[games.length - 1].turns[games[games.length - 1].turns.length-1].text }}
@@ -113,7 +122,7 @@
           </v-col>
           <v-col v-if="!isPlaying" cols="6" md="2" class="text-center mx-3">
             <v-btn large dark @click.stop="play">
-              <v-icon left>mdi-ray-start-arrow</v-icon> Начать игру
+              <v-icon left>mdi-nintendo-game-boy</v-icon> Начать игру
             </v-btn>
           </v-col>
         </v-row>
@@ -143,7 +152,7 @@
             justify="center"
           >
             <v-col cols="6" md="2" class="text-center">
-              <v-btn large class="lime darken-3"
+              <v-btn large class="green"
                 :dark="submitable"
                 :disabled="!submitable"
                 @click.stop="submit"
@@ -225,6 +234,7 @@ export default {
   methods: {
     play() {
       if (this.isPlaying) { this.surrend(); }
+      if (!this.games.length) this.drawer = true;
       this.isPlaying = true;
       this.win = false;
       this.lose = false;
@@ -305,7 +315,7 @@ export default {
       }
       console.log('input', this.inputValue, 'secret', this.secret);
       console.log('bulls', bulls, 'cows', cows);
-      return (bulls === this.secret.length) ? { win: 1 } : { bulls, cows };
+      return (bulls === this.secret.length) ? { win: 1, bulls } : { bulls, cows };
     },
   },
 };
@@ -313,8 +323,8 @@ export default {
 
 <style>
 .v-application .primary--text div {
-    color: #9E9D24 !important;
-    caret-color: #9E9D24 !important;
+    color: green !important;
+    caret-color: green !important;
 }
 .my-form {
   width: 100%;
