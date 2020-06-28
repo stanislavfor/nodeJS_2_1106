@@ -3,7 +3,7 @@ const enter = document.getElementById('enter');
 const withdraw = document.getElementById('withdraw');
 const input = document.getElementById('inp');
 const repeat = document.getElementById('repeat');
-let attempts = 0;
+let attempts = 10;
 let number = getNumber();
 
 repeat.hidden = true;
@@ -17,14 +17,17 @@ enter.addEventListener('click', function () {
 
     if (!checkInput(input.value)) p.innerText = "Некорректный ввод";
     else if (checkAnswer(input.value, number) !== true) {
-        attempts++;
-        p.innerText = checkAnswer(input.value, number);
-    }
-    else {
-        attempts++;
+        attempts--;
+        if (!attempts) {
+            p.innerText = "Не правильно! Попыток больше не осталось.\nЗагаданное число " + number.toString().replace(/\,/g, '');
+            showHide([input, enter, withdraw, repeat]);
+            log({ num: number, att: 10, win: false });
+        } else p.innerText = checkAnswer(input.value, number) + "\nОсталось " + attempts + " попыток";
+    } else {
+        attempts--;
         p.innerText = "Правильно! Загаданное число " + input.value;
         showHide([input, enter, withdraw, repeat]);
-        log({ num: number, att: attempts, win: true });
+        log({ num: number, att: 10 - attempts, win: true });
     }
     answers.appendChild(p);
     answers.scroll(0, 9999);
@@ -32,43 +35,19 @@ enter.addEventListener('click', function () {
 });
 
 withdraw.addEventListener('click', function () {
+    let p = document.createElement("p");
+
+    p.innerText = "Вы сдались. Правильный ответ " + number.toString().replace(/\,/g,'');
+    answers.appendChild(p);
+    answers.scroll(0, 9999);
     showHide([input, enter, withdraw, repeat]);
-    log({ num: number, att: attempts, win: false });
+    log({ num: number, att: 10 - attempts, win: false });
 });
 
 repeat.addEventListener('click', function () {
     answers.innerText = '';
     showHide([input, enter, withdraw, repeat]);
     number = getNumber();
-    attempts = 0;
+    attempts = 10;
     console.log(number);
 });
-
-
-// прошу прощения, что сделано через рекурсиюю вы на неё ругались.
-// не хватает времени переделать ¯\_(ツ)_ /¯
-// function ask(q) {
-//     rl.question(q, (answer) => {
-//         // проверка ввода
-//         if (!checkInput(answer)) {
-//             rl.question('Некорректный ввод! Хотите выйти? y/n\n', (ans) => {
-//                 if (ans === 'y') {
-//                     log(number, attempts, false);
-//                     rl.close();
-//                 } else ask('Угадайте 4-х значное число\n');
-//             });
-//         }
-//         // проверка ответа
-//         if (game(answer, number) === true) {
-//             log(number, attempts);
-//             rl.close();
-//         } else {
-//             attempts++;
-//             quest = game(answer,number);
-//             ask(quest);
-//         }
-//     });
-// }
-
-// // запуск игры
-// ask(quest);
