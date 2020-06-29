@@ -5,12 +5,15 @@
     <InputNumber v-else @get-number="getNumber"/>
     <hr>
     <OutputField v-bind:attempts="attempts"/>
+    <router-link to="/">На главную</router-link>
   </div>
 </template>
 
 <script>
 import InputNumber from '@/components/InputNumber'
 import OutputField from '@/components/OutputField'
+import moment from 'moment'
+
 export default {
   name: 'Game',
   data() {
@@ -25,7 +28,6 @@ export default {
     InputNumber, OutputField
   },
   mounted() {
-    console.log('mounted');
     this.secretNumber = this.getSecretNumber();
   },
   methods: {
@@ -34,7 +36,10 @@ export default {
       const {bulls, cows} = this.check(this.yourNumber,this.secretNumber);
       const answer = `${number.join('')} - Быки:${bulls} Коровы:${cows}`;
       this.attempts.push(answer);
-      if(bulls === 4) this.win = true;
+      if(bulls === 4) {
+        this.win = true;
+        this.sendToLog(this.win, this.secretNumber.join(''), this.attempts.length);
+      };
     },
     getSecretNumber() {
       let result = [];
@@ -60,6 +65,21 @@ export default {
           }
       });
       return answer;
+    },
+    sendToLog(isWin, secretNumber, attempts) {
+      const time = moment().format('DD.MM.YYYY, hh:mm:ss');
+      fetch('/api/log/', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          time,
+          isWin,
+          secretNumber,
+          attempts
+        })
+      });
     }
   }
 }

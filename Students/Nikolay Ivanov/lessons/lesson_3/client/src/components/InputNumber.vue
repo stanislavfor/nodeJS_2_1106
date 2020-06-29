@@ -18,10 +18,8 @@ export default {
     }, 
     methods: {
         onSubmit() {
-            //console.log('Submit');
             const result = this.number.split('').map(item => +item);
             if(this.checkResult(result)) {
-                //console.log(result);
                 this.$emit('get-number', result);
                 this.error = '';
             } else this.error = 'Число должно быть четырёхзначным и содержать неповторяющиеся цифры';

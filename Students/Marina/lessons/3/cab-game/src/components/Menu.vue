@@ -1,15 +1,12 @@
 <template>
-<div>
-    <button>Новая игра</button>
-    <button>Статистика</button>
-</div>
+  <div>
+    <button @click="$emit('new-game')">Новая игра</button>
+    <button @click="$emit('get-stat')">Статистика</button>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'Menu',
-  props: {
-    msg: String
-  }
-}
+  name: "Menu",
+};
 </script>

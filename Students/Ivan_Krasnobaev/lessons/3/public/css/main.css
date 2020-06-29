@@ -26,13 +26,13 @@ body {
   font-size: 20px;
 }
 #answers {
-  max-height: 400px;
+  max-height: 350px;
   overflow-y: scroll;
   background: rgb(128,128,128,0.1);
 }
 #answers>p {
   font-size: 14px;
-  margin: 5px 10px;
+  margin: 8px 10px;
 }
 #inp {
   width: 30px;

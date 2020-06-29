@@ -38,12 +38,6 @@ function checkAnswer (q, n) {
   const ans = Array.from(q);
   let bulls = cows = 0;
 
-  // for (let i = 0; i < ans.length; i++) {
-  //   if (n.indexOf( parseInt(ans[i]) ) !== -1) {
-  //     n.indexOf( parseInt(ans[i]) ) == i ? bulls++ : cows++;
-  //   }
-  // }
-
   ans.forEach((el, i) => {
     if (n.indexOf( parseInt(el) ) !== -1) {
       n.indexOf( parseInt(el) ) == i ? bulls++ : cows++;
@@ -53,7 +47,7 @@ function checkAnswer (q, n) {
   if (bulls == 4) {
     return true;
   } else {
-    return 'Коров = ' + cows + ' Быков = ' + bulls;
+    return q + ' Коров = ' + cows + ' Быков = ' + bulls;
   }
 }
 
@@ -75,4 +69,16 @@ function log(obj) {
     },
     body: JSON.stringify(obj)
   }).then(data => console.log(data));
+}
+
+/* запрос логов */
+
+function getLogs() {
+  fetch('/', {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({logs:true})
+  }).then(data => data);
 }

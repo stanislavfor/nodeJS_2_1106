@@ -84,6 +84,7 @@ body {
   font-family: diablo;
 }
 #input_button {
+  display: inline;
   outline: none;
   width: 250px;
   height: 68px;
@@ -100,28 +101,22 @@ body {
 #input_button:active {
   color: #eb7c0d;
 }
-#logger {
-  position: absolute;
-  z-index: 2;
-  width: 353px;
-  height: 134px;
-  background: url("../img/cload.png") no-repeat;
-  margin: 10px 0 0 610px;
-}
-#logger_link {
-  position: absolute;
+#input_replay {
+  display: none;
+  outline: none;
+  width: 250px;
+  height: 68px;
+  margin: 10px 0 0 120px;
   font-family: diablo;
-  font-size: 60px;
+  font-size: 30px;
   line-height: 1.2;
   font-weight: 900;
   color: #eb7c0d;
-  padding: 30px 0 0 60px;
-  text-decoration: none;
 }
-#logger_link:hover {
+#input_replay:hover {
   color: black;
 }
-#logger_link:active {
+#input_replay:active {
   color: #eb7c0d;
 }
 #help {
@@ -130,7 +125,7 @@ body {
   width: 353px;
   height: 134px;
   background: url("../img/cload.png") no-repeat;
-  margin: 10px 0 0 20px;
+  margin: 10px 0 0 610px;
 }
 #help_link {
   position: absolute;
@@ -139,7 +134,7 @@ body {
   line-height: 1.2;
   font-weight: 900;
   color: #eb7c0d;
-  padding: 30px 0 0 110px;
+  padding: 30px 0 0 100px;
   text-decoration: none;
 }
 #help_link:hover {

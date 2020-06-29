@@ -12,10 +12,10 @@ class App extends Component {
     super();
     this.state = {
       guess: [],
-      attempt: [],
+      attempts: [],
       bulls: 0,
       cows: 0,
-      rounds: 5,
+      rounds: 10,
       gameStatus: true,
     };
   }
@@ -25,22 +25,22 @@ class App extends Component {
 
     this.setState({
       guess: guessNumber,
-      attempt: [],
+      attempts: [],
       bulls: 0,
       cows: 0,
-      rounds: 5,
+      rounds: 10,
       gameStatus: true,
     });
   };
 
   checkAttempt = async (bulls, cows, value) => {
-    const { rounds } = this.state;
+    const { rounds, attempts } = this.state;
     const isWin = checker(bulls, rounds);
 
     await this.setState((state) => {
       return {
         gameStatus: isWin,
-        attempt: value,
+        attempts: [...attempts, { attempt: value, bulls: bulls, cows: cows }],
         bulls: bulls,
         cows: cows,
         rounds: state.rounds - 1,
@@ -53,25 +53,26 @@ class App extends Component {
   };
 
   postLog = () => {
-    const { guess, attempt, rounds, gameStatus } = this.state;
+    const { guess, attempts, rounds, gameStatus } = this.state;
 
     return fetch("/logs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ guess, attempt, rounds, gameStatus }),
+      body: JSON.stringify({ guess, attempts, rounds, gameStatus }),
     }).then((d) => d.json());
   };
 
   render() {
-    const { guess, attempt, bulls, cows, gameStatus, rounds } = this.state;
+    const { guess, attempts, bulls, cows, gameStatus, rounds } = this.state;
 
     return (
       <div className="container">
         <Header initGame={this.initGame} guess={guess} />
         <GameStatus
-          attempt={attempt}
+          guess={guess}
+          attempts={attempts}
           bulls={bulls}
           cows={cows}
           gameStatus={gameStatus}
