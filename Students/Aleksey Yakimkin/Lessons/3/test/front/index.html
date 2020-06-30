@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра Быки и Коровы</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+    <div id="app">
+        <nav class="menu">
+            <router-link to="/" >Игра</router-link>
+            <router-link to="/log">Лог</router-link>
+        </nav>
+        <header class="container">
+        </header>
+        <main class="container">
+            <h1>{{ name }}</h1>
+            <router-view></router-view>
+        </main>
+        <footer class="container">
+
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.1.2/vuex.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

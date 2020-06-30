@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&subset=cyrillic');
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.game {
+  background: no-repeat url(../img/cow.jpg);
+  background-size: cover;
+  height: 100vh;
+  padding: 25px;
+}
+.game>h1 {
+  display: inline;
+  padding: 25px;
+}
+.panel {
+  width: 300px;
+  margin: 25px;
+  padding: 15px;
+  background: white;
+  border-radius: 10px;
+}
+.panel>p {
+  font-size: 20px;
+}
+#answers {
+  max-height: 350px;
+  overflow-y: scroll;
+  background: rgb(128,128,128,0.1);
+}
+#answers>p {
+  font-size: 14px;
+  margin: 8px 10px;
+}
+#inp {
+  width: 30px;
+}
+.buttons {
+  margin-top: 10px;
+}
