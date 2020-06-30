@@ -7,20 +7,43 @@
     >
       <v-list>
         <v-list-item>
-          Список ходов:
+          История:
         </v-list-item>
-        <v-list-item v-if="!turns.length">
-          Сделайте первый ход.
+        <v-list-item v-if="!games.length">
+          Нет ни одной игры для отображения.
         </v-list-item>
-        <v-list-item v-for="data of turns" :key="data.turn">
-          <v-list-item-content class="py-2">
-            <v-list-item-title>
-             <b> Ход {{ data.turn }} </b> - {{ data.date }}
-            </v-list-item-title>
-            Попытка: {{ data.text }}, Б: {{ data.bulls || 0 }}, К: {{ data.cows || 0 }}
-            {{ data.win ? '\nПОБЕДА!' : '' }}
-          </v-list-item-content>
-        </v-list-item>
+        <v-list-group
+          v-for="game of games"
+          :key="game.id"
+          :value="game.id == games.length"
+          prepend-icon="mdi-gamepad"
+          append-icon=""
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>
+                Игра {{ game.id }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <v-list-item v-if="!game.turns.length">
+            <v-list-item-content>
+              Не сделано ни одного хода.
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item
+            v-for="data of game.turns"
+            :key="data.turn"
+          >
+            <v-list-item-content class="py-2">
+              <v-list-item-title>
+              <b> Ход {{ data.turn }} </b> - {{ data.date }}
+              </v-list-item-title>
+              Попытка: {{ data.text }}, Б: {{ data.bulls || 0 }}, К: {{ data.cows || 0 }}
+              {{ data.win ? '\nПОБЕДА!' : '' }} {{ data.lose ? '\nПОРАЖЕНИЕ...' : '' }}
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
 
@@ -28,18 +51,18 @@
       app
       dark
     >
-      <v-spacer />
-      <v-col cols="12" md="5" sm="5">
-        <v-toolbar-title>
-          <v-icon left>mdi-gamepad-variant-outline</v-icon> Игра Быки и Коровы
-        </v-toolbar-title>
-      </v-col>
+      <v-toolbar>
+        <v-spacer />
+            <v-toolbar-title>
+              <v-spacer />
+              <v-icon left>mdi-gamepad-variant-outline</v-icon> Игра Быки и Коровы
+            </v-toolbar-title>
 
-      <v-col cols="12" md="2" sm="3">
-        <v-btn class="pa-0" block @click.stop="drawer = !drawer">
-          <v-icon left>mdi-history</v-icon> История ходов
+          <v-spacer />
+      </v-toolbar>
+        <v-btn fixed right icon @click.stop="drawer = !drawer">
+          <v-icon center>mdi-history</v-icon>
         </v-btn>
-      </v-col>
     </v-app-bar>
 
     <v-main>
@@ -48,45 +71,77 @@
         fluid
       >
         <v-row
+          v-if="games.length && games[games.length - 1].turns.length && isPlaying"
+          class="result text-center"
+        >
+            <v-spacer />
+            <v-col cols="12" md="2" sm="2" class="py-0">
+              <v-icon left>mdi-strategy</v-icon>
+              <p>Ходов осталось:
+                {{ 10 - games[games.length - 1].turns.length }}
+              </p>
+            </v-col>
+            <v-col cols="12" md="2" sm="2" class="py-0">
+              <v-icon left>mdi-eye-outline</v-icon>
+              <p>Введено:
+                {{ games[games.length - 1].turns[games[games.length - 1].turns.length-1].text }}
+              </p>
+            </v-col>
+            <v-col cols="12" md="1" sm="1" class="py-0">
+              <v-icon left>mdi-check-all</v-icon>
+              <p>Быки:
+                {{ games[games.length - 1].turns[games[games.length - 1].turns.length-1].bulls }}
+              </p>
+            </v-col>
+            <v-col cols="12" md="1" sm="1" class="py-0">
+              <v-icon left>mdi-cow</v-icon>
+              <p>Коровы:
+                {{ games[games.length - 1].turns[games[games.length - 1].turns.length-1].cows }}
+              </p>
+            </v-col>
+            <v-spacer />
+        </v-row>
+        <v-row v-else-if="win || lose" class="result text-center" height="120px">
+          <v-col cols="12" md="12">
+            <h1>{{ win ? 'Победа!' : 'Поражение...' }}</h1>
+          </v-col>
+        </v-row>
+        <v-row v-else-if="isPlaying" class="result text-center">
+          <v-col cols="12" md="12">
+            <p>Началась новая игра.</p>
+            <p>Компьютер загадал число.</p>
+          </v-col>
+        </v-row>
+
+        <v-row
           align="center"
           justify="center"
         >
-          <v-col cols="6" md="2" class="text-center">
+          <v-col cols="6" md="2" class="text-center mx-3">
             <game-rules />
           </v-col>
-          <v-col v-if="!isPlaying" cols="6" md="2" class="text-center">
+          <v-col v-if="!isPlaying" cols="6" md="2" class="text-center mx-3">
             <v-btn large dark @click.stop="play">
-              <v-icon left>mdi-ray-start-arrow</v-icon> Начать игру
+              <v-icon left>mdi-nintendo-game-boy</v-icon> Начать игру
             </v-btn>
           </v-col>
         </v-row>
-        <v-row v-if="turns.length && isPlaying" class="text-center">
-          <v-spacer />
-          <v-col cols="12" md="2">
-            <v-icon left>mdi-check-all</v-icon> <p>Быки: {{ turns[turns.length-1].bulls }}</p>
-          </v-col>
-          <v-col cols="12" md="2">
-            <v-icon left>mdi-cow</v-icon> <p>Коровы: {{ turns[turns.length-1].cows }}</p>
-          </v-col>
-          <v-spacer />
-        </v-row>
-        <v-row v-else-if="win" class="text-center">
-          <v-col cols="12" md="6"><p>Победа!</p></v-col>
-        </v-row>
-        <v-row v-else><v-col cols="12" md="6"><p/></v-col></v-row>
-        <form v-if="isPlaying" @submit="submit" class="my-form">
+
+        <form v-if="isPlaying" @submit.prevent="submit" class="my-form">
           <v-row
             align="center"
             justify="center"
           >
-            <v-col cols="4" md="4" class="text-center">
+            <v-col cols="12" md="5" sm="6" class="text-center">
               <v-text-field
-                v-model="inputValue"
+                v-model.trim="inputValue"
                 class="game-input"
                 ref="input"
                 height="50px"
+                hint="Угадайте 4-значное число"
+                persistent-hint
                 :rules="[rules.counter, rules.unique]"
-                label="Угадайте 4-значное число"
+                label="Ваша попытка:"
                 color="green darken-2"
                 hide-details="auto"
               />
@@ -97,7 +152,11 @@
             justify="center"
           >
             <v-col cols="6" md="2" class="text-center">
-              <v-btn large dark @click.stop="submit">
+              <v-btn large class="green"
+                :dark="submitable"
+                :disabled="!submitable"
+                @click.stop="submit"
+              >
                 <v-icon left>mdi-keyboard-return</v-icon> Проверить
               </v-btn>
             </v-col>
@@ -148,11 +207,13 @@ export default {
   data: () => ({
     drawer: false,
     isPlaying: false,
-    turns: [],
+    games: [], // array of games objects
     inputValue: '',
     formHasErrors: false,
     secret: '',
     win: false,
+    lose: false,
+    selectedHistory: undefined,
     rules: {
       unique: (value) => {
         for (let i = 0; i < value.length - 1; i += 1) {
@@ -165,21 +226,29 @@ export default {
       counter: (value) => value.length === 4 || 'Введите 4-значное число.',
     },
   }),
+  computed: {
+    submitable() {
+      return (this.rules.unique(this.inputValue) + this.rules.counter(this.inputValue) === 2);
+    },
+  },
   methods: {
     play() {
-      if (!this.isPlaying) {
-        this.isPlaying = true;
-        this.turns = [];
-        this.win = false;
-        this.secret = this.generator();
-      }
+      if (this.isPlaying) { this.surrend(); }
+      if (!this.games.length) this.drawer = true;
+      this.isPlaying = true;
+      this.win = false;
+      this.lose = false;
+      this.secret = this.generator();
+      this.games.push({ id: this.games.length + 1, turns: [] });
     },
     surrend() {
       if (this.isPlaying) {
+        this.lose = true;
         this.isPlaying = false;
-        this.turns.push({
-          turn: this.turns.length + 1,
+        this.games[this.games.length - 1].turns.push({
+          turn: this.games[this.games.length - 1].turns.length + 1,
           text: 'СДАЛСЯ',
+          lose: true,
           date: dayjs().format('DD.MM.YY HH:mm:ss'),
         });
       }
@@ -193,16 +262,27 @@ export default {
 
       let res;
       let win;
-      if (this.rules.unique(this.inputValue) + this.rules.counter(this.inputValue) === 2) {
+      let lose;
+      const game = this.games[this.games.length - 1];
+      const turn = game.turns.length + 1;
+      if (this.submitable) {
         res = this.check_result();
         win = !!res.win;
+        lose = (!win && turn >= 10);
 
-        this.turns.push({
-          turn: this.turns.length + 1,
+        game.turns.push({
+          turn,
           text: this.inputValue,
           ...res,
+          lose,
           date: dayjs().format('DD.MM.YY HH:mm:ss'),
         });
+
+        if (this.games[this.games.length - 1].turns.length >= 10) {
+          this.games[this.games.length - 1].win = false;
+          this.lose = true;
+          this.isPlaying = false;
+        }
         this.inputValue = '';
 
         if (win) {
@@ -235,15 +315,23 @@ export default {
       }
       console.log('input', this.inputValue, 'secret', this.secret);
       console.log('bulls', bulls, 'cows', cows);
-      return (bulls === this.secret.length) ? { win: 1 } : { bulls, cows };
+      return (bulls === this.secret.length) ? { win: 1, bulls } : { bulls, cows };
     },
   },
 };
 </script>
 
 <style>
+.v-application .primary--text div {
+    color: green !important;
+    caret-color: green !important;
+}
 .my-form {
   width: 100%;
+  max-height: fit-content;
+}
+.result {
+  min-height: 104px;
   max-height: fit-content;
 }
 .game-input input {
