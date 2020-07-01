@@ -7,7 +7,7 @@ module.exports = async (inputData) => {
   await fs.readFile(fileUrl, "utf-8", (err, data) => {
     try {
       if (!err) {
-        const { guess, attempt, rounds, gameStatus } = inputData;
+        const { guess, attempts, rounds, gameStatus } = inputData;
         let resultText;
 
         if (!gameStatus) {
@@ -17,8 +17,8 @@ module.exports = async (inputData) => {
         }
 
         const log = {
-          guessedNumber: guess,
-          userAttempt: attempt,
+          guessedNumber: guess.join(""),
+          userAttempts: attempts,
           roundsLeft: rounds,
           gameStatus: resultText,
           time: moment().format("DD MM YYYY, h:mm:ss"),

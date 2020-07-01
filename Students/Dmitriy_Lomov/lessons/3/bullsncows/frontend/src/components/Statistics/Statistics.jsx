@@ -1,15 +1,27 @@
 import React from "react";
 import { Jumbotron, Container } from "react-bootstrap";
 
-export default function Statistics({ bulls, cows, rounds, attempt }) {
+export default function Statistics({ bulls, cows, rounds, attempts }) {
   return (
-    <Jumbotron fluid>
+    <Jumbotron className="d-flex">
       <Container>
-        <h5>Статистика</h5>
-        {attempt.length > 0 && <p>{`Твоя попытка - ${attempt}`}</p>}
-        <p>{`Твои быки - ${bulls}`}</p>
-        <p>{`Твои коровы - ${cows}`}</p>
+        <h5>Текущий ход</h5>
+        <p>{`Быки - ${bulls}`}</p>
+        <p>{`Коровы - ${cows}`}</p>
         <p>{`Осталось раундов - ${rounds}`}</p>
+      </Container>
+      <Container>
+        <h5>История ходов</h5>
+        <Container>
+          {attempts.length > 0 &&
+            attempts.map((el, i) => (
+              <p key={i}>
+                {i + 1} попытка:&nbsp;
+                <strong>{el.attempt}</strong>&nbsp; Б - <span>{el.bulls}</span>
+                &nbsp;К - <span>{el.cows}</span>
+              </p>
+            ))}
+        </Container>
       </Container>
     </Jumbotron>
   );
