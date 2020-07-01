@@ -3,12 +3,12 @@
 Frontend is ready up in folder 'build'.
 To run project you just need install server dependencies and start them.
 
-## Server install and start project
+## Server install and run project
 ```
 npm run setup
 ```
 
-### Server install (use after setup)
+### Server run (only when server installed)
 ```
 npm start
 ```
