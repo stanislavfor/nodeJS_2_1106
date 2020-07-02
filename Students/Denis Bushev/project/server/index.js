@@ -1,8 +1,15 @@
 let express = require('express');
 
+let db = require('mongoose');
+
+db.connect('mongodb://localhost/geekshop', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+
+
 let server = express();
 server.use(express.json()); //popozje
-
 let basketRouter = require('./routers/basket-router');
 let catalogRouter = require('./routers/catalog-router');
 server.use('/basket', basketRouter);
